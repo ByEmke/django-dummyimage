@@ -61,13 +61,49 @@ class DummyImage(object):
 
         # draw text centered
         if text:
-            font = ImageFont.truetype(FONT_PATH, int(width / 10))
+            text = breakTextIntoLines(text, 15)
+            font = ImageFont.truetype(FONT_PATH, 19)
+            number_of_lines = len(text)
+            line_height = height / (number_of_lines * 2)
+            current_line_text_pos_x = line_height
 
-            center = (width / 2, height / 2)
-            text_size = font.getsize(text)
-            text_center = (center[0] - text_size[0] / 2,
-                        center[1] - text_size[1] / 2)
-            draw.text(text_center, text, font=font,
-                      fill=form.cleaned_data['textcolor'])
+            for line in text:
+                center = (width / 2, current_line_text_pos_x)
+                text_size = font.getsize(arrayValuesJoin(line))
+                text_center = (center[0] - text_size[0] / 2, center[1] - text_size[1] / 2)
+                draw.text(text_center, arrayValuesJoin(line), font=font, fill=form.cleaned_data['textcolor'])
+                current_line_text_pos_x += line_height * 2
 
         return image
+
+def breakTextIntoLines(text, characters_in_line):
+    """
+        Breaks text into lines based on the number of characters allowed in a line
+
+        Example usage
+            breakTextIntoLines('some random text', 10) // [['some', 'random'], ['text']]
+            breakTextIntoLines('some random', 10) // [['some', 'random']]
+    """
+    text = text.split()
+    lines = [[]]
+    curr_line = 1
+    for word in text:
+        if (arrayValuesLength(lines[curr_line-1]) + len(word)) >= characters_in_line:
+            curr_line+=1
+            
+        try:
+            lines[curr_line-1].append(word)
+        except IndexError:
+            lines.append([word])
+            
+    return lines
+    
+def arrayValuesLength(array):
+    """
+        Helper function for breakTextIntoLines function.
+        Returns length of strings in the array
+    """
+    return len(''.join(map(str,array)))
+
+def arrayValuesJoin(array, delimiter=' '):
+    return delimiter.join(map(str,array))
