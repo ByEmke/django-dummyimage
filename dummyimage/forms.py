@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 
 
-MAX_DIMENSION = getattr(settings, 'DUMMYIMAGE_MAX_DIMENSION', sys.maxint)
+MAX_DIMENSION = getattr(settings, 'DUMMYIMAGE_MAX_DIMENSION', 1000)
 DEFAULT_BG = getattr(settings, 'DUMMYIMAGE_DEFAULT_BG', 'white')
 DEFAULT_TEXT = getattr(settings, 'DUMMYIMAGE_DEFAULT_TEXT', 'grey')
 DEFAULT_BORDER = getattr(settings, 'DUMMYIMAGE_DEFAULT_BORDER', 'grey')

@@ -61,7 +61,7 @@ class DummyImage(object):
 
         # draw text centered
         if text:
-            font = ImageFont.truetype(FONT_PATH, width / 10)
+            font = ImageFont.truetype(FONT_PATH, int(width / 10))
 
             center = (width / 2, height / 2)
             text_size = font.getsize(text)
